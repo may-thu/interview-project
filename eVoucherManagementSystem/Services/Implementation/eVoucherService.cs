@@ -77,9 +77,17 @@ namespace eVoucherManagementSystem.Services.Implementation
         {
             var voucher = _messageMapper.MapToeVoucher(createVoucherRequest.eVoucher);
             voucher.Id = Guid.NewGuid();
+            voucher.CreatedBy = "system";//need to upade current login user
+            voucher.CreatedDate = DateTime.Now;
+            voucher.UpdatedBy = "system";//need to upade current login user
+            voucher.UpdatedDate = DateTime.Now;
             List<eVoucherPaymentMode> enumerable = new List<eVoucherPaymentMode>();            
             foreach (var item in createVoucherRequest.eVoucher.eVoucherPaymentModeDtos)
             {
+                item.CreatedBy = "system";//need to upade current login user
+                item.CreatedDate = DateTime.Now;
+                item.UpdatedBy = "system";//need to upade current login user
+                item.UpdatedDate = DateTime.Now;
                 enumerable.Add(_messageMapper.MapToeVoucherPaymentMode(item));
             }
             voucher.eVoucherPaymentMode = enumerable;
@@ -97,6 +105,8 @@ namespace eVoucherManagementSystem.Services.Implementation
             if(updateEVoucherRequest.Id == updateEVoucherRequest.eVoucher.Id)
             {
                 var voucher = _messageMapper.MapToeVoucher(updateEVoucherRequest.eVoucher);
+                voucher.UpdatedBy = "system";//need to upade current login user
+                voucher.UpdatedDate = DateTime.Now;
                 _eVoucherRepository.UpdateVoucher(voucher);
                 var voucherDto = _messageMapper.MapToeVoucherDto(voucher);
                 update = new UpdateEVoucherResponse()
